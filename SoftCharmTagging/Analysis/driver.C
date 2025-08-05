@@ -5,20 +5,25 @@ void driver(int sample=0)
 {
   const char *hstfilename, *sumfilename; 
   TChain *chain = new TChain("Events");
-  nanoAna m_selec;//declared an instance of our class.
+  nanoAna2 m_selec;//declared an instance of our class.
   
   //--------------------------------------------------------------------------//
   //               Choose the sample you want to run over                     //
   //--------------------------------------------------------------------------//
 
   if(sample==0){
-    chain->Add("../output_files/CMS_mcRunIISummer20UL16MiniAODv2_TTToHadronic_TuneCP5_13TeV-powheg-pythia8_NANOAODSIMCUSTOM106X_mcRun2_asymptotic_v17.root");
-    hstfilename = "nanoAna_hist.root";
+    chain->Add("../output_files/test.root");
+    hstfilename = "nanoAna_hist1.root";
   }
 
   if(sample==1){
     chain->Add("../output_files/tree.root");
-    hstfilename = "nanoAnaTree_hist.root";
+    hstfilename = "nanoAna_hist2.root";
+  }
+
+  if(sample==2){
+    chain->Add("../output_files/test2016.root");
+    hstfilename = "nanoAna_hist3.root";
   }
 
   std::cout<<"Output : "<<hstfilename<<std::endl;

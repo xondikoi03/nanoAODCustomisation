@@ -122,10 +122,10 @@ bool nanoAna::Process(Long64_t entry)
 
 void nanoAna::BookHistograms(){
 
-  h.hist[1] = new TH1F("njets", "Number of Jets", 20, 0, 20);
-  h.hist[2] = new TH1F("jet_pt", "Jet pT", 100, 0, 500);
-  h.hist[3] = new TH1F("jet_eta", "Jet Eta", 100, -4, 4);
-  h.hist[4] = new TH1F("jet_phi", "Jet Phi", 100, -4, 4);
+  h.hist[1] = new TH1F("nJets", ";nJets; Events/GeV", 20, 0, 20);
+  h.hist[2] = new TH1F("Jet_pt", ";Jet_pt; nJets", 100, 0, 500);
+  h.hist[3] = new TH1F("Jet_eta", ";Jet_eta; nJets", 100, -4, 4);
+  h.hist[4] = new TH1F("Jet_phi", ";Jet_phi; nJets", 100, -4, 4);
 }
 
 void nanoAna::SlaveTerminate()

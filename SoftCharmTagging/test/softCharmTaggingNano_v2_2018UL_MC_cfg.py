@@ -54,7 +54,7 @@ process.NANOAODSIMoutput = cms.OutputModule("NanoAODOutputModule",
         dataTier = cms.untracked.string('NANOAODSIM'),
         filterName = cms.untracked.string('')
     ),
-    fileName = cms.untracked.string('file:test.root'),
+    fileName = cms.untracked.string("../output_files/test.root"),
     outputCommands = process.NANOAODSIMEventContent.outputCommands
 )
 

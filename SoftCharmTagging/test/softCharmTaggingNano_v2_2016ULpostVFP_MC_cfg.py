@@ -4,6 +4,7 @@
 # Source: /local/reps/CMSSW/CMSSW/Configuration/Applications/python/ConfigBuilder.py,v 
 # with command line options: NANO --python_filename softCharmTaggingNano_v2_2016ULpostVFP_MC_cfg.py --fileout file:tree.root -s NANO --mc --conditions 106X_mcRun2_asymptotic_v17 --era Run2_2016,run2_nanoAOD_106Xv2 --eventcontent NANOAODSIM --datatier NANOAODSIM --customise NanoAODCustomisation/SoftCharmTagging/Customisers.patchVertexTable --customise_commands=process.add_(cms.Service('InitRootHandlers',     EnableIMT = cms.untracked.bool(False)));     process.MessageLogger.cerr.FwkReport.reportEvery=1000;     process.NANOAODSIMoutput.fakeNameForCrab=cms.untracked.bool(True);     from NanoAODCustomisation.SoftCharmTagging.Customisers import reclusterJets;     reclusterJets(process, runOnMC=True) --nThreads 2 -n -1 --no_exec
 import FWCore.ParameterSet.Config as cms
+import FWCore.Utilities.FileUtils as FileUtils
 
 from Configuration.Eras.Era_Run2_2016_cff import Run2_2016
 from Configuration.Eras.Modifier_run2_nanoAOD_106Xv2_cff import run2_nanoAOD_106Xv2
@@ -23,12 +24,13 @@ process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(-1)
+    input = cms.untracked.int32(10000)
 )
 
 # Input source
+files = FileUtils.loadListFromFile("datasets/CMS_mc_RunIISummer20UL16MiniAODv2_TTToHadronic_TuneCP5_13TeV-powheg-pythia8_MINIAODSIM_106X_mcRun2_asymptotic_v17-v1_130000_file_index.txt")
 process.source = cms.Source("PoolSource",
-    fileNames = cms.untracked.vstring('file:NANO_PAT.root'),
+    fileNames = cms.untracked.vstring(*files),
     secondaryFileNames = cms.untracked.vstring()
 )
 
@@ -52,7 +54,7 @@ process.NANOAODSIMoutput = cms.OutputModule("NanoAODOutputModule",
         dataTier = cms.untracked.string('NANOAODSIM'),
         filterName = cms.untracked.string('')
     ),
-    fileName = cms.untracked.string('file:tree.root'),
+    fileName = cms.untracked.string('../output_files/test2016.root'),
     outputCommands = process.NANOAODSIMEventContent.outputCommands
 )
 
@@ -73,7 +75,7 @@ from PhysicsTools.PatAlgos.tools.helpers import associatePatAlgosToolsTask
 associatePatAlgosToolsTask(process)
 
 #Setup FWK for multithreaded
-process.options.numberOfThreads=cms.untracked.uint32(2)
+process.options.numberOfThreads=cms.untracked.uint32(16)
 process.options.numberOfStreams=cms.untracked.uint32(0)
 process.options.numberOfConcurrentLuminosityBlocks=cms.untracked.uint32(1)
 
