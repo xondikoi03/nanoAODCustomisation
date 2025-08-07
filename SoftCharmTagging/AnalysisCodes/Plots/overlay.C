@@ -90,8 +90,8 @@ void overlay(){
   TCanvas *c1 = new TCanvas("c1","CMS Open Data", 1800, 1200);
   // Legend
   TLegend *lg1 = new TLegend(0.6, 0.5, 0.9, 0.6,NULL,"NDC");
-  lg1->AddEntry(h1,"customNanoAOD","lp");
-  lg1->AddEntry(h5,"centralNanoAOD","lf");
+  lg1->AddEntry(h5,"customNanoAOD","lp");
+  lg1->AddEntry(h1,"centralNanoAOD","lf");
   h1->Draw("hist");
   gPad->Update();
   TPaveStats* stats1 = (TPaveStats*)h1->FindObject("stats");
@@ -118,14 +118,14 @@ void overlay(){
   // Plot2: Jet_pt
   decorate(h2, kRed+0, 3);
   decorate(h6, kBlue+0, 3);
-  h2->GetXaxis()->SetRangeUser(0, 300);
-  h6->GetXaxis()->SetRangeUser(0, 300);
+  h2->GetXaxis()->SetRangeUser(0, 50);
+  h6->GetXaxis()->SetRangeUser(0, 50);
   TCanvas *c2 = new TCanvas("c2","CMS Open Data", 1800, 1200);
   // Legend
   TLegend *lg2 = new TLegend(0.6, 0.5, 0.9, 0.6,NULL,"NDC");
   decLegend(lg2,0.0285,""); 
-  lg2->AddEntry(h2,"customNanoAOD","lp");
-  lg2->AddEntry(h6,"centralNanoAOD","lf");
+  lg2->AddEntry(h6,"customNanoAOD","lp");
+  lg2->AddEntry(h2,"centralNanoAOD","lf");
   h6->Draw("hist");
   gPad->Update();
   TPaveStats* stats3 = (TPaveStats*)h6->FindObject("stats");
@@ -152,8 +152,8 @@ void overlay(){
   // Legend
   TLegend *lg3 = new TLegend(0.37, 0.2, 0.625, 0.3,NULL,"NDC");
   decLegend(lg1,0.0285,""); 
-  lg3->AddEntry(h3,"customNanoAOD","lp"); 
-  lg3->AddEntry(h7,"centralNanoAOD","lf");
+  lg3->AddEntry(h7,"customNanoAOD","lp"); 
+  lg3->AddEntry(h3,"centralNanoAOD","lf");
   h3->Draw("hist");
   gPad->Update();
   TPaveStats* stats5 = (TPaveStats*)h3->FindObject("stats");
@@ -181,8 +181,8 @@ void overlay(){
   // Legend
   TLegend *lg4 = new TLegend(0.37, 0.2, 0.625, 0.3,NULL,"NDC");
   decLegend(lg1,0.0285,"");
-  lg4->AddEntry(h4,"customNanoAOD","lp");
-  lg4->AddEntry(h8,"centralNanoAOD","lf");
+  lg4->AddEntry(h8,"customNanoAOD","lp");
+  lg4->AddEntry(h4,"centralNanoAOD","lf");
   h8->Draw("hist");
   gPad->Update();
   TPaveStats* stats7 = (TPaveStats*)h8->FindObject("stats");
