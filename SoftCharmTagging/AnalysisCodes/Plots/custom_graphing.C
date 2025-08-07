@@ -68,7 +68,7 @@ void custom_graphing(){
   t3.SetTextSize(0.03);
   t1.DrawLatexNDC(0.66, 0.84, "CMS Open Data");
   t2.DrawLatexNDC(0.66, 0.79, "#it{#bf{Simulation}}");
-  t3.DrawLatexNDC(0.1, 0.92, "CMS_mc_RunIISummer20UL16MiniAODv2_TTToHadronic_TuneCP5_13TeV-powheg-pythia8");
+  t3.DrawLatexNDC(0.1, 0.95, "CMS_mc_RunIISummer20UL16MiniAODv2_TTToHadronic_TuneCP5_13TeV-powheg-pythia8");
   c1->Update();
   c1->SaveAs("custom_nanoAOD_plots/nJets_plot.png");
 
@@ -80,7 +80,7 @@ void custom_graphing(){
   h2->Draw("hist");
   t1.DrawLatexNDC(0.66, 0.84, "CMS Open Data");
   t2.DrawLatexNDC(0.66, 0.79, "#it{#bf{Simulation}}");
-  t3.DrawLatexNDC(0.1, 0.92, "CMS_mc_RunIISummer20UL16MiniAODv2_TTToHadronic_TuneCP5_13TeV-powheg-pythia8");
+  t3.DrawLatexNDC(0.1, 0.95, "CMS_mc_RunIISummer20UL16MiniAODv2_TTToHadronic_TuneCP5_13TeV-powheg-pythia8");
   c2->Update();
   c2->SaveAs("custom_nanoAOD_plots/Jet_pt_plot.png");
 
@@ -91,7 +91,7 @@ void custom_graphing(){
   h3->Draw("hist");
   t1.DrawLatexNDC(0.66, 0.84, "CMS Open Data");
   t2.DrawLatexNDC(0.66, 0.79, "#it{#bf{Simulation}}");
-  t3.DrawLatexNDC(0.1, 0.92, "CMS_mc_RunIISummer20UL16MiniAODv2_TTToHadronic_TuneCP5_13TeV-powheg-pythia8");
+  t3.DrawLatexNDC(0.1, 0.95, "CMS_mc_RunIISummer20UL16MiniAODv2_TTToHadronic_TuneCP5_13TeV-powheg-pythia8");
   c3->Update();
   c3->SaveAs("custom_nanoAOD_plots/Jet_eta_plot.png");
 
@@ -106,7 +106,7 @@ void custom_graphing(){
   h4->Draw("hist");
   t1.DrawLatexNDC(0.66, 0.84, "CMS Open Data");
   t2.DrawLatexNDC(0.66, 0.79, "#it{#bf{Simulation}}");
-  t3.DrawLatexNDC(0.1, 0.92, "CMS_mc_RunIISummer20UL16MiniAODv2_TTToHadronic_TuneCP5_13TeV-powheg-pythia8");
+  t3.DrawLatexNDC(0.1, 0.95, "CMS_mc_RunIISummer20UL16MiniAODv2_TTToHadronic_TuneCP5_13TeV-powheg-pythia8");
   c4->Update();
   c4->SaveAs("custom_nanoAOD_plots/Jet_phi_plot.png");
 }

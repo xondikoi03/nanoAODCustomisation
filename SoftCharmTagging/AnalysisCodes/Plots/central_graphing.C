@@ -59,54 +59,54 @@ void central_graphing(){
 
   // Plot1: nJets
   decorate(h1, kRed+0, 3);
-  h1->SetStats(0);
+  h1->SetStats(4);
   TCanvas *c1 = new TCanvas("c1","CMS Open Data", 1800, 1200);
   h1->Draw("hist");
   TLatex t1, t2, t3;
   t1.SetTextSize(0.05);
   t2.SetTextSize(0.04);
   t3.SetTextSize(0.03);
-  t1.DrawLatexNDC(0.66, 0.84, "CMS Open Data");
-  t2.DrawLatexNDC(0.66, 0.79, "#it{#bf{Simulation}}");
-  t3.DrawLatexNDC(0.1, 0.92, "CMS_mc_RunIISummer20UL16NanoAODv9_TTToHadronic_TuneCP5_13TeV-powheg-pythia8");
+  // t1.DrawLatexNDC(0.66, 0.84, "CMS Open Data");
+  // t2.DrawLatexNDC(0.66, 0.79, "#it{#bf{Simulation}}");
+  t3.DrawLatexNDC(0.1, 0.95, "CMS_mc_RunIISummer20UL16NanoAODv9_TTToHadronic_TuneCP5_13TeV-powheg-pythia8");
   c1->Update();
   c1->SaveAs("central_nanoAOD_plots/nJets_plot.png");
 
   // Plot2: Jet_pt
   decorate(h2, kRed+0, 3);
-  h2->SetStats(0);
+  h2->SetStats(4);
   h2->GetXaxis()->SetRangeUser(0, 400);
   TCanvas *c2 = new TCanvas("c2","CMS Open Data", 1800, 1200);
   h2->Draw("hist");
-  t1.DrawLatexNDC(0.66, 0.84, "CMS Open Data");
-  t2.DrawLatexNDC(0.66, 0.79, "#it{#bf{Simulation}}");
-  t3.DrawLatexNDC(0.1, 0.92, "CMS_mc_RunIISummer20UL16NanoAODv9_TTToHadronic_TuneCP5_13TeV-powheg-pythia8");
+  // t1.DrawLatexNDC(0.66, 0.84, "CMS Open Data");
+  // t2.DrawLatexNDC(0.66, 0.79, "#it{#bf{Simulation}}");
+  t3.DrawLatexNDC(0.1, 0.95, "CMS_mc_RunIISummer20UL16NanoAODv9_TTToHadronic_TuneCP5_13TeV-powheg-pythia8");
   c2->Update();
   c2->SaveAs("central_nanoAOD_plots/Jet_pt_plot.png");
 
   // Plot3: Jet_eta
   decorate(h3, kRed+0, 3);
-  h3->SetStats(0);
+  h3->SetStats(4);
   TCanvas *c3 = new TCanvas("c3","CMS Open Data", 1800, 1200);
   h3->Draw("hist");
-  t1.DrawLatexNDC(0.66, 0.84, "CMS Open Data");
-  t2.DrawLatexNDC(0.66, 0.79, "#it{#bf{Simulation}}");
-  t3.DrawLatexNDC(0.1, 0.92, "CMS_mc_RunIISummer20UL16NanoAODv9_TTToHadronic_TuneCP5_13TeV-powheg-pythia8");
+  // t1.DrawLatexNDC(0.66, 0.84, "CMS Open Data");
+  // t2.DrawLatexNDC(0.66, 0.79, "#it{#bf{Simulation}}");
+  t3.DrawLatexNDC(0.1, 0.95, "CMS_mc_RunIISummer20UL16NanoAODv9_TTToHadronic_TuneCP5_13TeV-powheg-pythia8");
   c3->Update();
   c3->SaveAs("central_nanoAOD_plots/Jet_eta_plot.png");
 
 
   // Plot4: Jet_phi
   decorate(h4, kRed+0, 3);
-  h4->SetStats(0);
+  h4->SetStats(4);
   h4->GetXaxis()->SetRangeUser(-5, 5);
   h4->SetMinimum(0);
   h4->SetMaximum(1300);
   TCanvas *c4 = new TCanvas("c4","CMS Open Data", 1800, 1200);
   h4->Draw("hist");
-  t1.DrawLatexNDC(0.66, 0.84, "CMS Open Data");
-  t2.DrawLatexNDC(0.66, 0.79, "#it{#bf{Simulation}}");
-  t3.DrawLatexNDC(0.1, 0.92, "CMS_mc_RunIISummer20UL16NanoAODv9_TTToHadronic_TuneCP5_13TeV-powheg-pythia8");
+  // t1.DrawLatexNDC(0.66, 0.84, "CMS Open Data");
+  // t2.DrawLatexNDC(0.66, 0.79, "#it{#bf{Simulation}}");
+  t3.DrawLatexNDC(0.1, 0.95, "CMS_mc_RunIISummer20UL16NanoAODv9_TTToHadronic_TuneCP5_13TeV-powheg-pythia8");
   c4->Update();
   c4->SaveAs("central_nanoAOD_plots/Jet_phi_plot.png");
 }
