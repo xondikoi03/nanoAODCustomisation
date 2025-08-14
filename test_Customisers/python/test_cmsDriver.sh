@@ -5,7 +5,7 @@ cmsDriver.py --python_filename test_${TAG}_$1_MC_config.py \
     --fileout ../outputfiles/nanoMCTest.root -s NANO --mc \
     --conditions $2 --era $3 \
     --eventcontent NANOAODSIM --datatier NANOAODSIM \
-    --customise_commands "from PhysicsTools.NanoAOD.nano_cff import *; \
+    --customise_commands "from PhysicsTools.NanoAOD.nano_cff import nanoAOD_customizeMC; \
     process.add_(cms.Service('InitRootHandlers', EnableIMT = cms.untracked.bool(False))); \
     process.MessageLogger.cerr.FwkReport.reportEvery = 1000; \
     process.load('FWCore.MessageLogger.MessageLogger_cfi'); \
