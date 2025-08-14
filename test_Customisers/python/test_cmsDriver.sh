@@ -1,7 +1,7 @@
 TAG=v1
 
 function cmsDriverGenerator{
-    cmsDriver.py NANO --python_filename test_${TAG}_$1_MC_config.py \
+    cmsDriver.py --python_filename test_${TAG}_$1_MC_config.py \
         --fileout ../outputfiles/nanoMCTest.root -s NANO --mc --conditions $2 --era $3 \
         --eventcontent NANOAODSIM --datatier NANOAODSIM \
         --customise_commands="from PhysicsTools.NanoAOD.nano_cff.py import ; \
