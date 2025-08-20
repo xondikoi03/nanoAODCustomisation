@@ -28,7 +28,7 @@ process.maxEvents = cms.untracked.PSet(
 )
 
 # Input source
-files = FileUtils.loadListFromFile("../datasets/test.txt")
+files = FileUtils.loadListFromFile("../datasets/test_1.txt")
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(*files),
     secondaryFileNames = cms.untracked.vstring()
@@ -81,16 +81,15 @@ process.options.numberOfConcurrentLuminosityBlocks=cms.untracked.uint32(1)
 
 # customisation of the process.
 
-# Automatic addition of the customisation function from PhysicsTools.NanoAOD.nano_cff
-from PhysicsTools.NanoAOD.nano_cff import nanoAOD_customizeMC 
+from nanoAODCustomisations.test_Customisers.customiser_cff import nanoAODCustomise_DeepInfoAK 
 
 #call to customisation function nanoAOD_customizeMC imported from PhysicsTools.NanoAOD.nano_cff
-process = nanoAOD_customizeMC(process)
+process = nanoAODCustomise_DeepInfoAK8(process)
 
 # End of customisation functions
 
 # Customisation from command line
-from PhysicsTools.NanoAOD.nano_cff import nanoAOD_customizeMC
+# from PhysicsTools.NanoAOD.nano_cff import nanoAOD_customizeMC
 process.add_(cms.Service('InitRootHandlers', EnableIMT = cms.untracked.bool(False)))
 process.MessageLogger.cerr.FwkReport.reportEvery = 1000 
 
