@@ -42,4 +42,5 @@ PFJETVARS = cms.PSet(P4Vars,
   nConstElecs     = Var("electronMultiplicity()",int,doc="number of electrons in the jet"),
   nConstPhotons   = Var("photonMultiplicity()",int,doc="number of photons in the jet"),
 ```
-Here we see
+
+Here we see in `GENJETVARS` defines the variables that are to be stored in the `nanoAOD` file. Here, `P4VARS` object stores the kinematic (pt, eta, phi, mass) information about `gen_jets`. Similarly for `PFJETVARS` there are multiple variables that we want to store in the custom `nanoAOD` file.
