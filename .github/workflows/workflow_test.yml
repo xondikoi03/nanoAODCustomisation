@@ -7,14 +7,14 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
-
-      - name: Pull docker image
-        run: docker pull cmsopendata/cmssw_10_6_30-slc7_amd64_gcc700 
       
-      - name: Run commands in docker container
+      - name: Run the docker container
         run: |
-          docker run --rm \
-            -v ${{ github.workspace }}:/workspace \
-            -w /workspace/nanoAODCustomisation/test_Customisers/test \
-            cmsopendata/cmssw_10_6_30-slc7_amd64_gcc700 \
-            bash -c "scram b -j 8 && source test_cmsDriver.sh && cmsRun test_v1_2016ULpostVFP_MC_config.py"
+          docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace gitlab-registry.cern.ch/cms-cloud/cmssw-docker/cmssw_10_6_30-slc7_amd64_gcc700:latest \
+          bash -c git clone https://github.com/xondikoi03/nanoAODCustomisation.git && git checkout devel \
+          bash -c cd test_Customisers/test && scram b \
+          bash -c cmsRun test_v1_2016ULpostVFP_MC_config.py
+           
+
+
+          
