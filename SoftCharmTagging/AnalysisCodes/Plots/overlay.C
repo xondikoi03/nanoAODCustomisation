@@ -74,15 +74,15 @@ void overlay(){
   TH1F *h7 = (TH1F*)file2->Get(plotname3);
   TH1F *h8 = (TH1F*)file2->Get(plotname4);
 
-  // Scaling the histograms
-  h1->Scale(1.0/h1->Integral());
-  h2->Scale(1.0/h2->Integral());
-  h3->Scale(1.0/h3->Integral());
-  h4->Scale(1.0/h4->Integral());
-  h5->Scale(1.0/h5->Integral());
-  h6->Scale(1.0/h6->Integral());
-  h7->Scale(1.0/h7->Integral());
-  h8->Scale(1.0/h8->Integral());
+//   // Scaling the histograms
+//   h1->Scale(1.0/h1->Integral());
+//   h2->Scale(1.0/h2->Integral());
+//   h3->Scale(1.0/h3->Integral());
+//   h4->Scale(1.0/h4->Integral());
+//   h5->Scale(1.0/h5->Integral());
+//   h6->Scale(1.0/h6->Integral());
+//   h7->Scale(1.0/h7->Integral());
+//   h8->Scale(1.0/h8->Integral());
 
   // Plot1: nJets
   decorate(h1, kRed+0, 3);
@@ -118,8 +118,8 @@ void overlay(){
   // Plot2: Jet_pt
   decorate(h2, kRed+0, 3);
   decorate(h6, kBlue+0, 3);
-  h2->GetXaxis()->SetRangeUser(0, 50);
-  h6->GetXaxis()->SetRangeUser(0, 50);
+  h2->GetXaxis()->SetRangeUser(0, 100);
+  h6->GetXaxis()->SetRangeUser(0, 100);
   TCanvas *c2 = new TCanvas("c2","CMS Open Data", 1800, 1200);
   // Legend
   TLegend *lg2 = new TLegend(0.6, 0.5, 0.9, 0.6,NULL,"NDC");
@@ -154,16 +154,16 @@ void overlay(){
   decLegend(lg1,0.0285,""); 
   lg3->AddEntry(h7,"customNanoAOD","lp"); 
   lg3->AddEntry(h3,"centralNanoAOD","lf");
-  h3->Draw("hist");
+  h7->Draw("hist");
   gPad->Update();
-  TPaveStats* stats5 = (TPaveStats*)h3->FindObject("stats");
-  stats5->SetTextColor(kBlue);
+  TPaveStats* stats5 = (TPaveStats*)h7->FindObject("stats");
+  stats5->SetTextColor(kRed);
   stats5->SetX1NDC(0.70); stats5->SetX2NDC(0.90);
   stats5->SetY1NDC(0.79); stats5->SetY2NDC(0.89);
-  h7->Draw("hist sames");
+  h3->Draw("hist sames");
   gPad->Update();
-  TPaveStats* stats6 = (TPaveStats*)h7->FindObject("stats");
-  stats6->SetTextColor(kRed);
+  TPaveStats* stats6 = (TPaveStats*)h3->FindObject("stats");
+  stats6->SetTextColor(kBlue);
   stats6->SetX1NDC(0.70); stats6->SetX2NDC(0.90);
   stats6->SetY1NDC(0.69); stats6->SetY2NDC(0.79);
   t1.DrawLatexNDC(0.1, 0.95, "CMS Open Data");

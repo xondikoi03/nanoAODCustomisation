@@ -1,0 +1,20 @@
+name: Workflow_Test
+on: push
+
+jobs:
+  docker-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Pull docker image
+        run: docker pull cmsopendata/cmssw_10_6_30-slc7_amd64_gcc700 
+      
+      - name: Run commands in docker container
+        run: |
+          docker run --rm \
+            -v ${{ github.workspace }}:/workspace \
+            -w /workspace/nanoAODCustomisation/test_Customisers/test \
+            cmsopendata/cmssw_10_6_30-slc7_amd64_gcc700 \
+            bash -c "scram b -j 8 && source test_cmsDriver.sh && cmsRun test_v1_2016ULpostVFP_MC_config.py"
