@@ -42,8 +42,10 @@ jobs:
               source /cvmfs/cms.cern.ch/cmsset_default.sh
               scram project ${CMSSW_VERSION}
               cd ${CMSSW_VERSION}/src
-              eval `scramv1 runtime -sh`
+              cp -r /test_workspace/* ./
               cmsenv
               scram b -j 8
               cd test_Customisers/test/
               cmsRun test_v1_2016ULpostVFP_MC_config.py
+         
+  
