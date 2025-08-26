@@ -55,6 +55,7 @@ jobs:
           image: ${{ matrix.IMAGE }}
           shell: bash
           options: >-
+              -u 1001:1001
               -u $(id -u):$(id -g)
               -v /cvmfs:/cvmfs:shared
               -v ${{ github.workspace }}:/test_workspace
