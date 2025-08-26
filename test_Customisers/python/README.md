@@ -6,6 +6,27 @@ In this directory we will make use of the `nano_cff.py` file to test out customi
 
 The <a href="https://github.com/cms-sw/cmssw/blob/CMSSW_10_6_X/PhysicsTools/NanoAOD/python/nano_cff.py">`nano_cff.py`</a> is a customisation module that defines which physics objects are to be saved.
 
+### `nanoAOD_addTauIds(process)`
+---
+This function customises the process to add new Tau ID algorithms and updates the tau collection in nanoAOD to include the `deepTau2017v2p1` ID, ensuring the correct order for tau isolation and identification.
+
+```python
+import RecoTauTag.RecoTau.tools.runTauIdMVA as tauIdConfig
+def nanoAOD_addTauIds(process):
+    updatedTauName = "slimmedTausUpdated"
+    tauIdEmbedder = tauIdConfig.TauIDEmbedder(process, cms, debug = False, updatedTauName = updatedTauName,
+            toKeep = [ "deepTau2017v2p1" ])
+    tauIdEmbedder.runTauID()
+    process.patTauMVAIDsSeq.insert(process.patTauMVAIDsSeq.index(getattr(process, updatedTauName)),
+                                   process.rerunMvaIsolationSequence)
+    return process
+```
+### `nanoAOD_addBoostedTauIds(process)`
+---
+This function customises the process to add boosted Tau ID discriminators and updates the Tau collection in nanoAOD to include `2017v2`, `dR0p32017v2`, `newDM2017v2`, `againstEle2018` ID algorithms. 
+
+```python
+
 ### `nanoAOD_activateVID(process)`
 ---
 This is a function that configures the **ValueMap-based Identification(VID)** framework for electrons and photons in the nanoAOD. In context of **EGamma VID**, the information of an particle being identified(ID) as an electron or a photon is stored as a float or a boolean in the ValueMap (`edm::ValueMap`). 
