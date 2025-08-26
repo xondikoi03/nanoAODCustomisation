@@ -1,3 +1,5 @@
 output_files/testCentral2016nanoAOD.root
 *.C~
 *.h~
+*.pyc
+__init__.py
