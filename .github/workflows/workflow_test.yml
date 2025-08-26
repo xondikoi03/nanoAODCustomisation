@@ -14,7 +14,7 @@ jobs:
         SCRAM_ARCH: ["slc7_amd64_gcc700"]
 
     env: 
-        docker_opt_rw: -v /cvmfs:/cvmfs:shared -v ${{ github.workspace }}:/test_workspace -w /test_workspace -e CMSSW_VERSION=${{ matrix.CMSSW_VERSION }} -e SCRAM_ARCH=${{ matrix.SCRAM_ARCH }}
+        docker_opt_rw: -v /cvmfs:/cvmfs:shared -v ${{ github.workspace }}:/test_workspace --mount source=cmsusr, destination=/home/cmsusr -w /home/cmsusr -e CMSSW_VERSION=${{ matrix.CMSSW_VERSION }} -e SCRAM_ARCH=${{ matrix.SCRAM_ARCH }}
       
     steps:
       - name: Setting up the Repository
@@ -23,10 +23,10 @@ jobs:
             remove-android: 'true'
             remove-haskell: 'true'
             remove-dotnet: 'true'
-      - uses: actions/checkout@v4
         
       - name: Setup CVMFS 
-        uses: cvmfs-contrib/github-action-cvmfs@v4
+        uses: actions/checkout@v4
+      - uses: cvmfs-contrib/github-action-cvmfs@v4
         with:
           cvmfs_repositories: 'cms.cern.ch'  
       - name: Setup ${{ matrix.CMSSW_VERSION }} and Compilation
@@ -36,12 +36,14 @@ jobs:
           shell: bash
           options: ${{ env.docker_opt_rw }}
           run: |
+              cd /home/cmsusr
               source /cvmfs/cms.cern.ch/cmsset_default.sh
-              scram project CMSSW ${CMSSW_VERSION}
+              scram project ${CMSSW_VERSION}
               cd ${CMSSW_VERSION}/src
               eval `scramv1 runtime -sh`
-              cd /test_workspace
               cmsenv
+              mkdir -p test2
+              cp -r /test_workspace test2/
               scram b -j 8
               cd test_Customisers/test/
               cmsRun test_v1_2016ULpostVFP_MC_config.py
