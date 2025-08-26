@@ -38,7 +38,7 @@ jobs:
           run: |
               source /cvmfs/cms.cern.ch/cmsset_default.sh
               scram project ${CMSSW_VERSION}
-              cd CMSSW_VERSION/src
+              cd ${CMSSW_VERSION}/src
               cmsenv
               cd /test_workspace
               scram b -j 8
