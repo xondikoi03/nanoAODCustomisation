@@ -25,8 +25,7 @@ jobs:
             remove-android: 'true'
             remove-haskell: 'true'
             remove-dotnet: 'true'
-        
-      # - name: Setup CVMFS 
+      # - name: Setup CVMFS
       #   uses: actions/checkout@v4
       # - uses: cvmfs-contrib/github-action-cvmfs@v4
       #   with:
@@ -48,7 +47,15 @@ jobs:
       #         scram b -j 8
       #         cd test_Customisers/test/
       #         cmsRun test_v1_2016ULpostVFP_MC_config.py
-         
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup CVMFS
+        uses: cvmfs-contrib/github-action-cvmfs@v4
+        with:
+          cvmfs_repositories: 'cms.cern.ch'
+
+
       - name: Setup ${{ matrix.CMSSW_VERSION }} and Compilation
         uses: rhaschke/docker-run-action@v5
         with:
@@ -56,7 +63,6 @@ jobs:
           shell: bash
           options: >-
               -u 1001:1001
-              -u $(id -u):$(id -g)
               -v /cvmfs:/cvmfs:shared
               -v ${{ github.workspace }}:/test_workspace
               -w /test_workspace
