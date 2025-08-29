@@ -51,6 +51,7 @@ jobs:
               scram project ${CMSSW_VERSION}
               cd ${CMSSW_VERSION}/src
               echo "CMSSW_10_6_30 is now available"
+              cp -r /test_workspace/* ./
               cmsenv
               scram b -j 8
               ls -lah
