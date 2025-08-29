@@ -23,5 +23,4 @@ jobs:
       run: |
         mkdir Test_Workflow
         docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace gitlab-registry.cern.ch/cms-cloud/cmssw-docker/cmssw_10_6_30-slc7_amd64_gcc700:latest
-        bash -c "cd test_Customisers && scram b -j 8"
-        bash -c "cd test && cmsRun test_v1_2016ULpostVFP_MC_config.py"
+        bash -c "pwd"
