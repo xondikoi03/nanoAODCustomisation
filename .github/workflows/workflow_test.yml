@@ -56,6 +56,8 @@ jobs:
               cp -r /test_workspace/* ./
               cmsenv
               scram b -j 8
-              ls -lah
               cd test_Customisers/python/
-              ls -lah
+              echo "#####################"
+              echo "Running cmsRun job"
+              echo "#####################"
+              cmsRun test_v1_2016ULpostVFP_MC_config.py
