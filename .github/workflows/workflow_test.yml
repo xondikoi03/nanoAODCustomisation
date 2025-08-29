@@ -48,7 +48,8 @@ jobs:
           run: |
               source /cvmfs/cms.cern.ch/cmsset_default.sh
               export SITECONFIG_PATH=/cvmfs/cms.cern.ch/SITECONF/T3_CH_PublicCloud
-              ln -s /cvmfs/cms.cern.ch/SITECONF/T3_CH_PublicCloud /cvmfs/cms.cern.ch/SITECONF/local
+              mkdir -p ${CMSSW_VERSION}/config/SITECONF
+              ln -sfn /cvmfs/cms.cern.ch/SITECONF/T3_CH_PublicCloud ${CMSSW_VERSION}/config/SITECONF/local
               echo "#####################################"
               ls -l /cvmfs/cms.cern.ch/SITECONF/local/
               echo "#####################################"
