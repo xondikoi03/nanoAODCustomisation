@@ -47,6 +47,7 @@ jobs:
           options: ${{ env.docker_opt_rw }}
           run: |
               source /cvmfs/cms.cern.ch/cmsset_default.sh
+              export SITECONFIG_PATH=/cvmfs/cms.cern.ch/SITECONF/T2_CH_CERN
               mkdir build_area && cd build_area
               scram project ${CMSSW_VERSION}
               cd ${CMSSW_VERSION}/src
@@ -58,6 +59,9 @@ jobs:
               scram b -j 8
               cd test_Customisers/test/
               echo "#####################"
-              echo "Running cmsRun job"
+              echo "Beginning cmsRun job"
               echo "#####################"
               cmsRun test_v1_2016ULpostVFP_MC_config.py
+              echo "#####################"
+              echo "Ending cmsRun job"
+              echo "#####################"
