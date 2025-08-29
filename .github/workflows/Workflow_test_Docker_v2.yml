@@ -15,10 +15,11 @@ jobs:
         remove-android: 'true'
         remove-dotnet: 'true'
         remove-haskell: 'true'
-        remove-java: 'true'
-    
-    - name: Running the docker container
+
+    - name: Checkout the GitHub repository to the workspace
       uses: actions/checkout@v4
+
+    - name: Running the docker container
       run: |
         mkdir Test_Workflow
         docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace gitlab-registry.cern.ch/cms-cloud/cmssw-docker/cmssw_10_6_30-slc7_amd64_gcc700:latest
