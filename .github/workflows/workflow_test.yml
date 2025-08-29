@@ -46,25 +46,21 @@ jobs:
           shell: bash
           options: ${{ env.docker_opt_rw }}
           run: |
-              source /cvmfs/cms.cern.ch/cmsset_default.sh
-              export SITECONFIG_PATH=/cvmfs/cms.cern.ch/SITECONF/T3_CH_PublicCloud
-              mkdir build_area && cd build_area
-              scram project ${CMSSW_VERSION}
-              echo "CMSSW_10_6_30 is now available"
-              cd ${CMSSW_VERSION}/src
-              cmsenv
-              mkdir -p ${CMSSW_VERSION}/config/SITECONF
-              ln -sfn /cvmfs/cms.cern.ch/SITECONF/T3_CH_PublicCloud ${CMSSW_VERSION}/config/SITECONF/local
-              ln -sfn /cvmfs/cms.cern.ch/SITECONF/T3_CH_PublicCloud /cvmfs/cms.cern.ch/config/SITECONF/local
-              mkdir nanoAODCustomisation && cd nanoAODCustomisation
-              pwd
-              cp -r /test_workspace/* ./
-              scram b -j 8
-              cd test_Customisers/test/
-              echo "#####################"
-              echo "Beginning cmsRun job"
-              echo "#####################"
-              cmsRun test_v1_2016ULpostVFP_MC_config.py
-              echo "#####################"
-              echo "Ending cmsRun job"
-              echo "#####################"
+            source /cvmfs/cms.cern.ch/cmsset_default.sh
+            export SITECONFIG_PATH=/cvmfs/cms.cern.ch/SITECONF/T3_CH_PublicCloud
+            mkdir build_area && cd build_area
+            scram project ${CMSSW_VERSION}
+            echo "CMSSW_10_6_30 is now available"
+            cd ${CMSSW_VERSION}/src
+            cmsenv
+            mkdir nanoAODCustomisation && cd nanoAODCustomisation
+            cp -r /test_workspace/* ./
+            scram b -j 8
+            cd test_Customisers/test/
+            echo "#####################"
+            echo "Beginning cmsRun job"
+            echo "#####################"
+            cmsRun test_v1_2016ULpostVFP_MC_config.py
+            echo "#####################"
+            echo "Ending cmsRun job"
+            echo "#####################"
