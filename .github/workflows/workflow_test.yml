@@ -56,7 +56,7 @@ jobs:
               cp -r /test_workspace/* ./
               cmsenv
               scram b -j 8
-              cd test_Customisers/python/
+              cd test_Customisers/test/
               echo "#####################"
               echo "Running cmsRun job"
               echo "#####################"
