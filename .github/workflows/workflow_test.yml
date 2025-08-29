@@ -55,5 +55,5 @@ jobs:
               cmsenv
               scram b -j 8
               ls -lah
-              cd test_Customisers/test/
+              cd test_Customisers/
               ls -lah
