@@ -23,8 +23,8 @@ jobs:
       run: |
         mkdir Test_Workflow
         docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace gitlab-registry.cern.ch/cms-cloud/cmssw-docker/cmssw_10_6_30-slc7_amd64_gcc700:latest
-        scram b -j 8
         cd test_Customisers/test/
+        scram b j -8
         echo "#####################"
         echo "Beginning cmsRun job"
         echo "#####################"
