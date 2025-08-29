@@ -1,0 +1,25 @@
+name: Workflow_test_Docker_v2
+on:
+  push:
+    branches:
+      - devel
+
+jobs:
+  test_workflow:
+    runs-on: ubuntu-latest
+    name: Test workflow using docker
+    steps:
+    - name: Initialisation of the test workflow
+      uses: AdityaGarg8/remove-unwanted-software@v1
+      with:
+        remove-android: 'true'
+        remove-dotnet: 'true'
+        remove-haskell: 'true'
+
+    - uses: actions/checkout@v4
+    
+    - name: Running the docker container
+      run: |
+        mkdir Test_Workflow
+        docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace gitlab-registry.cern.ch/cms-cloud/cmssw-docker/cmssw_10_6_30-slc7_amd64_gcc700:latest
+        ls -l
