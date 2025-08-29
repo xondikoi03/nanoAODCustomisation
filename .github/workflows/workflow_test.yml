@@ -55,5 +55,5 @@ jobs:
               cmsenv
               scram b -j 8
               ls -lah
-              cd test_Customisers/
+              cd test_Customisers/python/
               ls -lah
