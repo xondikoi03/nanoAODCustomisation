@@ -14,9 +14,13 @@ jobs:
         SCRAM_ARCH: ["slc7_amd64_gcc700"]
 
     env: 
-        # docker_opt_rw: -v /cvmfs:/cvmfs:shared -v ${{ github.workspace }}:/test_workspace --mount type=bind,source=/home/cmsusr, target=/home/cmsusr -w /home/cmsusr -e CMSSW_VERSION=${{ matrix.CMSSW_VERSION }} -e SCRAM_ARCH=${{ matrix.SCRAM_ARCH }}
- 
-        docker_opt_rw: -v /cvmfs:/cvmfs:shared -v ${{ github.workspace }}:/test_workspace -w /test_workspace -e CMSSW_VERSION=${{ matrix.CMSSW_VERSION }} -e SCRAM_ARCH=${{ matrix.SCRAM_ARCH }}
+        docker_opt_rw: >-
+              -u 1001:1001
+              -v /cvmfs:/cvmfs:shared
+              -v ${{ github.workspace }}:/test_workspace
+              -w /test_workspace
+              -e CMSSW_VERSION=${{ matrix.CMSSW_VERSION }}
+              -e SCRAM_ARCH=${{ matrix.SCRAM_ARCH }}
       
     steps:
       - name: Setting up the Repository
@@ -25,28 +29,7 @@ jobs:
             remove-android: 'true'
             remove-haskell: 'true'
             remove-dotnet: 'true'
-      # - name: Setup CVMFS
-      #   uses: actions/checkout@v4
-      # - uses: cvmfs-contrib/github-action-cvmfs@v4
-      #   with:
-      #     cvmfs_repositories: 'cms.cern.ch'  
-      # - name: Setup ${{ matrix.CMSSW_VERSION }} and Compilation
-      #   uses: rhaschke/docker-run-action@v5
-      #   with: 
-      #     image: ${{ matrix.IMAGE }}
-      #     shell: bash
-      #     options: ${{ env.docker_opt_rw }}
-      #     run: |
-      #         cd /test_workspace
-      #         mkdir build_area && cd build_area
-      #         source /cvmfs/cms.cern.ch/cmsset_default.sh
-      #         scram project ${CMSSW_VERSION}
-      #         cd ${CMSSW_VERSION}/src
-      #         cp -r /test_workspace/* ./
-      #         cmsenv
-      #         scram b -j 8
-      #         cd test_Customisers/test/
-      #         cmsRun test_v1_2016ULpostVFP_MC_config.py
+
       - name: Checkout Repository
         uses: actions/checkout@v4
 
@@ -61,13 +44,7 @@ jobs:
         with:
           image: ${{ matrix.IMAGE }}
           shell: bash
-          options: >-
-              -u 1001:1001
-              -v /cvmfs:/cvmfs:shared
-              -v ${{ github.workspace }}:/test_workspace
-              -w /test_workspace
-              -e CMSSW_VERSION=${{ matrix.CMSSW_VERSION }}
-              -e SCRAM_ARCH=${{ matrix.SCRAM_ARCH }}
+          options: ${{ env.docker_opt_rw }}
           run: |
               source /cvmfs/cms.cern.ch/cmsset_default.sh
               mkdir build_area && cd build_area

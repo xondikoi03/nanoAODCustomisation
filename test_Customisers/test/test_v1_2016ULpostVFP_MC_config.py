@@ -2,9 +2,8 @@
 # using: 
 # Revision: 1.19 
 # Source: /local/reps/CMSSW/CMSSW/Configuration/Applications/python/ConfigBuilder.py,v 
-# with command line options: --python_filename test_v1_2016ULpostVFP_MC_config.py --fileout ../outputfiles/nanoMCTest.root -s NANO --mc --conditions 106X_mcRun2_asymptotic_v17 --era Run2_2016,run2_nanoAOD_106Xv2 --eventcontent NANOAODSIM --datatier NANOAODSIM --customise_commands from PhysicsTools.NanoAOD.nano_cff import nanoAOD_customizeMC;     process.add_(cms.Service('InitRootHandlers', EnableIMT = cms.untracked.bool(False)));     process.MessageLogger.cerr.FwkReport.reportEvery = 1000;     process.load('FWCore.MessageLogger.MessageLogger_cfi');     process.MessageLogger.cerr.threshold = 'INFO';     process.MessageLogger.categories.append('CMSOPENDATAPIPELINE');     process.MessageLogger.cerr.INFO = cms.untracked.PSet(limit = cms.untracked.int32(-1)); --nThreads 16 -n -1 --no_exec
+# with command line options: --python_filename test_v1_2016ULpostVFP_MC_config.py --fileout ../outputfiles/nanoMCTest.root -s NANO --mc --conditions 106X_mcRun2_asymptotic_v17 --era Run2_2016,run2_nanoAOD_106Xv2 --eventcontent NANOAODSIM --datatier NANOAODSIM --customise_commands from nanoAODCustomisation.    test_Customisers.customiser_cff import nanoAODCustomise_DeepInfoAK8;     import FWCore.Utilities.FileUtils as FileUtils;     files = FileUtils.loadListFromFile('../datasets/test_1.txt');     process.source = cms.Source('PoolSource',     fileNames = cms.untracked.vstring(*files),     secondaryFileNames = cms.untracked.vstring());     process.add_(cms.Service('InitRootHandlers', EnableIMT = cms.untracked.bool(False)));     process.MessageLogger.cerr.FwkReport.reportEvery = 1000;     process.load('FWCore.MessageLogger.MessageLogger_cfi');     process.MessageLogger.cerr.threshold = 'INFO';     process.MessageLogger.cerr.INFO = cms.untracked.PSet(limit = cms.untracked.int32(-1)); --nThreads 16 -n -1 --no_exec
 import FWCore.ParameterSet.Config as cms
-import FWCore.Utilities.FileUtils as FileUtils
 
 from Configuration.Eras.Era_Run2_2016_cff import Run2_2016
 from Configuration.Eras.Modifier_run2_nanoAOD_106Xv2_cff import run2_nanoAOD_106Xv2
@@ -24,15 +23,15 @@ process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(1000)
+    input = cms.untracked.int32(-1)
 )
 
-# Input source
-files = FileUtils.loadListFromFile("../datasets/test_1.txt")
-process.source = cms.Source("PoolSource",
-    fileNames = cms.untracked.vstring(*files),
-    secondaryFileNames = cms.untracked.vstring()
-)
+import FWCore.Utilities.FileUtils as FileUtils
+files = FileUtils.loadListFromFile('../datasets/test_1.txt')     
+process.source = cms.Source('PoolSource',
+                            fileNames = cms.untracked.vstring(*files),
+                            secondaryFileNames = cms.untracked.vstring())
+process.add_(cms.Service('InitRootHandlers', EnableIMT = cms.untracked.bool(False)))
 
 process.options = cms.untracked.PSet(
 
@@ -81,17 +80,23 @@ process.options.numberOfConcurrentLuminosityBlocks=cms.untracked.uint32(1)
 
 # customisation of the process.
 
-from nanoAODCustomisation.test_Customisers.customiser_cff import nanoAODCustomise_DeepInfoAK8
+# Automatic addition of the customisation function from PhysicsTools.NanoAOD.nano_cff
+#from PhysicsTools.NanoAOD.nano_cff import nanoAOD_customizeMC 
 
 #call to customisation function nanoAOD_customizeMC imported from PhysicsTools.NanoAOD.nano_cff
-process = nanoAODCustomise_DeepInfoAK8(process)
+#process = nanoAOD_customizeMC(process)
 
 # End of customisation functions
 
 # Customisation from command line
-# from PhysicsTools.NanoAOD.nano_cff import nanoAOD_customizeMC
-process.add_(cms.Service('InitRootHandlers', EnableIMT = cms.untracked.bool(False)))
-process.MessageLogger.cerr.FwkReport.reportEvery = 1000 
+
+from nanoAODCustomisation.test_Customisers.customiser_cff import nanoAODCustomise_DeepInfoAK8
+nanoAODCustomise_DeepInfoAK8(process)
+
+process.MessageLogger.cerr.FwkReport.reportEvery = 1000
+process.load('FWCore.MessageLogger.MessageLogger_cfi') 
+process.MessageLogger.cerr.threshold = 'INFO'     
+process.MessageLogger.cerr.INFO = cms.untracked.PSet(limit = cms.untracked.int32(-1))
 
 # Add early deletion of temporary data products to reduce peak memory need
 from Configuration.StandardSequences.earlyDeleteSettings_cff import customiseEarlyDelete
