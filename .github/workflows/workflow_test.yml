@@ -48,7 +48,7 @@ jobs:
           run: |
               source /cvmfs/cms.cern.ch/cmsset_default.sh
               export SITECONFIG_PATH=/cvmfs/cms.cern.ch/SITECONF/T3_CH_PublicCloud
-              ln -s /cvmfs/cms.cern.ch/SITECONF/T3_CH_PublicCloud SITECONF/local 
+              ln -s /cvmfs/cms.cern.ch/SITECONF/T3_CH_PublicCloud /cvmfs/cms.cern.ch/SITECONF/local
               echo "#####################################"
               ls -l /cvmfs/cms.cern.ch/SITECONF/local/
               echo "#####################################"
@@ -65,6 +65,7 @@ jobs:
               echo "#####################"
               echo "Beginning cmsRun job"
               echo "#####################"
+              cmsRun test_v1_2016ULpostVFP_MC_config.py
               echo "#####################"
               echo "Ending cmsRun job"
               echo "#####################"
