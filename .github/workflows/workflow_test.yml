@@ -21,6 +21,7 @@ jobs:
               -w /test_workspace
               -e CMSSW_VERSION=${{ matrix.CMSSW_VERSION }}
               -e SCRAM_ARCH=${{ matrix.SCRAM_ARCH }}
+              -e SITECONFIG_PATH=/cvmfs/cms.cern.ch/SITECONF/T3_CH_PublicCloud
       
     steps:
       - name: Setting up the Repository
@@ -47,7 +48,6 @@ jobs:
           options: ${{ env.docker_opt_rw }}
           run: |
             source /cvmfs/cms.cern.ch/cmsset_default.sh
-            export SITECONFIG_PATH=/cvmfs/cms.cern.ch/SITECONF/T3_CH_PublicCloud
             mkdir build_area && cd build_area
             scram project ${CMSSW_VERSION}
             echo "CMSSW_10_6_30 is now available"
