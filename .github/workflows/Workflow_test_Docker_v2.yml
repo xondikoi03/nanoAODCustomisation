@@ -22,8 +22,4 @@ jobs:
 
     - name: Running the docker container
       run: |
-        docker run -u 1001:1001 -v ${{ github.workspace }}:/workspace -w /workspace gitlab-registry.cern.ch/cms-cloud/cmssw-docker/cmssw_10_6_30-slc7_amd64_gcc700:latest bash -c "
-          ls -l
-          scram b
-          cd test_Customisers/test/
-        "
+        docker run -v ${{ github.workspace }}:/nanoAODCustomisation -w /nanoAODCustomisation gitlab-registry.cern.ch/cms-cloud/cmssw-docker/cmssw_10_6_30-slc7_amd64_gcc700:latest bash -c "ls -l && pwd"
