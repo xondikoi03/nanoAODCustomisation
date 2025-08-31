@@ -22,7 +22,7 @@ jobs:
 
     - name: Running the docker container
       run: |
-        docker run gitlab-registry.cern.ch/cms-cloud/cmssw-docker/cmssw_10_6_30-slc7_amd64_gcc700:latest \
+        docker run cmsopendata/cmssw_10_6_30-slc7_amd64_gcc700:latest \
         bash -c " \
         ls -l && pwd && \
         git clone https://github.com/xondikoi03/nanoAODCustomisation.git && \
