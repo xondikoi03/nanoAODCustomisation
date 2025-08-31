@@ -33,9 +33,16 @@ jobs:
         shell: bash
         options: ${{ env.docker_opt }}
         run: |
+          echo "Listing the files"
           ls -l
-          cp -r /nanoAODCustomisation/* ./
-          scram b -j 8
+
+          echo "Setting up CMSSW_10_6_30"
+          source /cvmfs/cms.cern.ch/cmsset_default.sh
+          cd /opt/cms/CMSSW_10_6_30/src
+          cmsenv
+
+          echo "Entering test_Customisers/test/"
+          scram b
           cd test_Customisers/test/
           echo "#####################"
           echo "Beginning cmsRun job"
