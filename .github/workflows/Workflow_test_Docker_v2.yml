@@ -34,6 +34,7 @@ jobs:
         shell: bash
         run: |
           mkdir nanoAODCustomisation && cd nanoAODCustomisation
+          ls -l
           cp -r /workspace/* ./
           scram b -j 8
           cd test_Customisers/test/
