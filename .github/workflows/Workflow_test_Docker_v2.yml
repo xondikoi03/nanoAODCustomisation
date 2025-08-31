@@ -9,25 +9,24 @@ jobs:
     runs-on: ubuntu-latest
     name: Test workflow using docker
 
-    container:
-        image: gitlab-registry.cern.ch/cms-cloud/cmssw-docker/cmssw_10_6_30-slc7_amd64_gcc700:latest
-        options: -u 1001:1001
-
     steps:
-    - name: Initialisation of the test workflow
-      uses: AdityaGarg8/remove-unwanted-software@v1
+    - name: Maximize build space
+      uses: easimon/maximize-build-space@v10
       with:
-        remove-android: 'true'
+        root-reserve-mb: 512
+        swap-size-mb: 1024
         remove-dotnet: 'true'
+        remove-android: 'true'
         remove-haskell: 'true'
+        remove-docker-images: 'true'
 
     - name: Checkout the GitHub repository to the workspace
       uses: actions/checkout@v4
 
     - name: Running the docker container
-      shell: bash
       run: |
-        ls -l
-        scram b
-        cd test_Customisers/test/
-        cmsRun test_v1_2016ULpostVFP_MC_config.py
+        docker run -u 1001:1001 -v ${{ github.workspace }}:/workspace -w /workspace gitlab-registry.cern.ch/cms-cloud/cmssw-docker/cmssw_10_6_30-slc7_amd64_gcc700:latest bash -c "
+          ls -l
+          scram b
+          cd test_Customisers/test/
+        "
