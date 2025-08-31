@@ -12,8 +12,8 @@ jobs:
     env:
         docker_opt: >-
             --rm 
-            -v ${{ github.workspace }}:/workspace 
-            -w /workspace 
+            -v ${{ github.workspace }}:/nanoAODCustomisation
+            -w /nanoAODCustomisation
 
     steps:
     - name: Initialisation of the test workflow
@@ -30,12 +30,11 @@ jobs:
       uses: rhaschke/docker-run-action@v5
       with:
         image: gitlab-registry.cern.ch/cms-cloud/cmssw-docker/cmssw_10_6_30-slc7_amd64_gcc700:latest
-        options: ${{ env.docker_opt }}
         shell: bash
+        options: ${{ env.docker_opt }}
         run: |
-          mkdir nanoAODCustomisation && cd nanoAODCustomisation
           ls -l
-          cp -r /workspace/* ./
+          cp -r /nanoAODCustomisation/* ./
           scram b -j 8
           cd test_Customisers/test/
           echo "#####################"
