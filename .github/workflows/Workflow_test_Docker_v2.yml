@@ -27,7 +27,9 @@ jobs:
         "
         ls -l && pwd \
         git clone https://github.com/xondikoi03/nanoAODCustomisation.git \
-        cd nanoAODCustomisation/test_Customiser/ \
+        cd nanoAODCustomisation \
+        git checkout devel \
+        cd test_Customiser \
         scram b \
         cd test \
         cmsRun test_v1_2016ULpostVFP_MC_config.py
