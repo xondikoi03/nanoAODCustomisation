@@ -32,7 +32,7 @@ def Customise_TauIdsCustomisation(process):
             process, cms, debug=False, updatedTauName=updatedTauName,
             toKeep = ["deepTau2017v1", "deepTau2017v2"])
         tauIdEmbedder.runTauID()
-        process.patTauMVAIDsSeq.index(getattr(process, updatedTauName)), process.rerunMvaIsolationSequence
+        process.patTauMVAIDsSeq.insert(process.patTauMVAIDsSeq.index(getattr(process, updatedTauName)), process.rerunMvaIsolationSequence)  
         return process
     process = nanoAOD_customiseAddTauIds(process)
 
