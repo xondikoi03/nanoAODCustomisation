@@ -1,31 +1,14 @@
 # Customisation Modules
 
-In this directory we will make use of the `nano_cff.py` file to test out customisations in nanoAOD. This will be only available in the `devel` branch and will not be pushed to the `master` branch.
+In this directory we will make use of the `customiser_cff.py` and `customiser_cff_v2.py` file to test out customisations in nanoAOD. This will be only available in the `devel` branch and will not be pushed to the `master` branch.
 
-## `nano_cff.py`
+## `customiser_cff.py`
 
-The <a href="https://github.com/cms-sw/cmssw/blob/CMSSW_10_6_X/PhysicsTools/NanoAOD/python/nano_cff.py">`nano_cff.py`</a> is a customisation module that defines which physics objects are to be saved.
+The `customiser_cff.py` makes use of the <a href="https://github.com/cms-sw/cmssw/blob/CMSSW_10_6_X/PhysicsTools/NanoAOD/python/nano_cff.py">`nano_cff.py`</a>, which is a customisation module that defines which physics objects are to be saved in nanoAOD Customisation. The `customiser_cff.py` recalculates all the jet-tagging algorithms for fat jets or AK8Jets.
 
-### `nanoAOD_addTauIds(process)`
+### `makePuppiesFromMiniAOD(process)`
 ---
-This function customises the process to add new Tau ID algorithms and updates the tau collection in nanoAOD to include the `deepTau2017v2p1` ID, ensuring the correct order for tau isolation and identification.
 
-```python
-import RecoTauTag.RecoTau.tools.runTauIdMVA as tauIdConfig
-def nanoAOD_addTauIds(process):
-    updatedTauName = "slimmedTausUpdated"
-    tauIdEmbedder = tauIdConfig.TauIDEmbedder(process, cms, debug = False, updatedTauName = updatedTauName,
-            toKeep = [ "deepTau2017v2p1" ])
-    tauIdEmbedder.runTauID()
-    process.patTauMVAIDsSeq.insert(process.patTauMVAIDsSeq.index(getattr(process, updatedTauName)),
-                                   process.rerunMvaIsolationSequence)
-    return process
-```
-### `nanoAOD_addBoostedTauIds(process)`
----
-This function customises the process to add boosted Tau ID discriminators and updates the Tau collection in nanoAOD to include `2017v2`, `dR0p32017v2`, `newDM2017v2`, `againstEle2018` ID algorithms. 
-
-```python
 
 ### `nanoAOD_activateVID(process)`
 ---
@@ -78,43 +61,6 @@ In summary, this function does the following:
 - Inserts the Electron/Photon ID sequence runs before the bitmap calculations.
 - Makes Era-Dependent changes or any special cases for specific eras.
 
-### `nanoAOD_addDeepInfo`
----
-This function configures the CMSSW process to rerun deep-learning based flavor-tagging and jet substructure algorithms for **AK4 jets** in nanoAOD production. It takes in boolean values for which tagging algorithms to re-run in the process and updates the jet collection accordingly. 
-
-1. Initialise Discriminator List: `_btagDiscriminators=[]` which creates an empty list for collecting all b-tagging and substructure dicriminators to be recalculated.
-
-2. Add DeepCSV Discriminators: If `addDeepBTag==True`, then add the DeepCSV discriminators for `b`, `bb` and `c` quarks.
-```python
-if addDeepBTag:
-    print("Updating process to run DeepCSV btag")
-    _btagDiscriminators += ['pfDeepCSVJetTags:probb','pfDeepCSVJetTags:probbb','pfDeepCSVJetTags:probc']
-``` 
-3. Add DeepFlavour Discriminators: If `addDeepFlavour==True` then add the DeepFlavour discriminators for b, bb and c quarks.
-```python
-if addDeepFlavour:
-    print("Updating process to run DeepFlavour btag")
-        _btagDiscriminators +=['pfDeepFlavourJetTags:probb','pfDeepFlavourJetTags:probbb','pfDeepFlavourJetTags:problepb','pfDeepFlavourJetTags:probc']
-```
-If none of the above discriminators are requested or set to `TRUE`, the function exits without modifying the process.
-```python
-if len(_btagDiscriminators)==0: return process
-```
-4. Updating the jet collection: The `updateJetCollection` function reruns all the selected discriminators on the AK4Jet collection with the specificed Jet energy corrections(`AK4PFchs`).
-```python
-    print("Will recalculate the following discriminators: "+", ".join(_btagDiscriminators))
-    updateJetCollection(
-               process,
-               jetSource = cms.InputTag('slimmedJets'),
-               jetCorrections = ('AK4PFchs', cms.vstring(['L1FastJet', 'L2Relative', 'L3Absolute','L2L3Residual']), 'None'),
-               btagDiscriminators = _btagDiscriminators,
-               postfix = 'WithDeepInfo',
-           )
-    process.load("Configuration.StandardSequences.MagneticField_cff")
-    process.jetCorrFactorsNano.src="selectedUpdatedPatJetsWithDeepInfo"
-    process.updatedJets.jetSource="selectedUpdatedPatJetsWithDeepInfo"
-    return process
-```
 ### `nanoAOD_addDeepInfoAK8`
 ---
 This function configures the CMSSW process to rerun deep-learning based flavor-tagging and jet substructure algorithms for fat-jets or **AK8 jets** in nanoAOD production. It takes in boolean values for which tagging algorithms to re-run in the process and updates the jet collection accordingly. 
@@ -194,12 +140,68 @@ print("Will recalculate the following discriminators on AK8 jets: "+", ".join(_b
     process.updatedJetsAK8.jetSource="selectedUpdatedPatJetsAK8WithDeepInfo"
     return process
 ```
-### `nanoAOD_CustomiseCommon(process)`:
+## `customiser_cff_v2.py`
 
+### `nanoAOD_addDeepInfo`
+---
+This function configures the CMSSW process to rerun deep-learning based flavor-tagging and jet substructure algorithms for **AK4 jets** in nanoAOD production. It takes in boolean values for which tagging algorithms to re-run in the process and updates the jet collection accordingly. 
 
-### `nanoAOD_CustomiseMC(process)`:
+1. Initialise Discriminator List: `_btagDiscriminators=[]` which creates an empty list for collecting all b-tagging and substructure dicriminators to be recalculated.
 
-### `nanoAOD_CustomiseData(process)`:
+2. Add DeepCSV Discriminators: If `addDeepBTag==True`, then add the DeepCSV discriminators for `b`, `bb` and `c` quarks.
+```python
+if addDeepBTag:
+    print("Updating process to run DeepCSV btag")
+    _btagDiscriminators += ['pfDeepCSVJetTags:probb','pfDeepCSVJetTags:probbb','pfDeepCSVJetTags:probc']
+``` 
+3. Add DeepFlavour Discriminators: If `addDeepFlavour==True` then add the DeepFlavour discriminators for b, bb and c quarks.
+```python
+if addDeepFlavour:
+    print("Updating process to run DeepFlavour btag")
+        _btagDiscriminators +=['pfDeepFlavourJetTags:probb','pfDeepFlavourJetTags:probbb','pfDeepFlavourJetTags:problepb','pfDeepFlavourJetTags:probc']
+```
+If none of the above discriminators are requested or set to `TRUE`, the function exits without modifying the process.
+```python
+if len(_btagDiscriminators)==0: return process
+```
+4. Updating the jet collection: The `updateJetCollection` function reruns all the selected discriminators on the AK4Jet collection with the specificed Jet energy corrections(`AK4PFchs`).
+```python
+    print("Will recalculate the following discriminators: "+", ".join(_btagDiscriminators))
+    updateJetCollection(
+               process,
+               jetSource = cms.InputTag('slimmedJets'),
+               jetCorrections = ('AK4PFchs', cms.vstring(['L1FastJet', 'L2Relative', 'L3Absolute','L2L3Residual']), 'None'),
+               btagDiscriminators = _btagDiscriminators,
+               postfix = 'WithDeepInfo',
+           )
+    process.load("Configuration.StandardSequences.MagneticField_cff")
+    process.jetCorrFactorsNano.src="selectedUpdatedPatJetsWithDeepInfo"
+    process.updatedJets.jetSource="selectedUpdatedPatJetsWithDeepInfo"
+    return process
+```
+
+### `nanoAOD_addTauIds(process)`
+---
+This function customises the process to add new Tau ID algorithms and updates the tau collection in nanoAOD to include the `deepTau2017v2p1` ID, ensuring the correct order for tau isolation and identification.
+
+```python
+import RecoTauTag.RecoTau.tools.runTauIdMVA as tauIdConfig
+def nanoAOD_addTauIds(process):
+    updatedTauName = "slimmedTausUpdated"
+    tauIdEmbedder = tauIdConfig.TauIDEmbedder(process, cms, debug = False, updatedTauName = updatedTauName,
+            toKeep = [ "deepTau2017v2p1" ])
+    tauIdEmbedder.runTauID()
+    process.patTauMVAIDsSeq.insert(process.patTauMVAIDsSeq.index(getattr(process, updatedTauName)),
+                                   process.rerunMvaIsolationSequence)
+    return process
+```
+### `nanoAOD_addBoostedTauIds(process)`
+---
+This function customises the process to add boosted Tau ID discriminators and updates the Tau collection in nanoAOD to include `2017v2`, `dR0p32017v2`, `newDM2017v2`, `againstEle2018` ID algorithms. 
+
+```python
+
+```
 
 ## `electrons_cff.py`
 

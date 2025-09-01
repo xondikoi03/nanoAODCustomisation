@@ -31,4 +31,4 @@ jobs:
         cd test_Customisers && \
         scram b && \
         cd test && \
-        cmsRun test_v1_2016ULpostVFP_MC_config.py"
+        cmsRun test_v1_2016ULpostVFP_MC_config_2.py"
