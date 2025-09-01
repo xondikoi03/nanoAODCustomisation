@@ -1,4 +1,4 @@
-name: Workflow_Test
+name: Workflow with CVMFS Test (IN PROGRESS)
 on: 
   push:
     branches:

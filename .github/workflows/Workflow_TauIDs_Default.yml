@@ -1,4 +1,4 @@
-name: Workflow_test_Docker_v2
+name: Default TauID Test
 on:
   push:
     branches:
