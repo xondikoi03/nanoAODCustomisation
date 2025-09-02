@@ -27,17 +27,19 @@ def Customise_TauIdsCustomisation(process):
     process = nanoAOD_activateVID(process)
     import RecoTauTag.RecoTau.tools.runTauIdMVA as tauIdConfig
     def nanoAOD_customiseAddTauIds(process):
-        updatedTauName = "slimmedTausUpdatedCustom"
+        updatedTauName = "slimmedTausUpdated"
         tauIdEmbedder = tauIdConfig.TauIDEmbedder(
             process, cms, debug=False, updatedTauName=updatedTauName,
             toKeep = ["deepTau2017v1", "deepTau2017v2"])
         tauIdEmbedder.runTauID()
+
         process.patTauMVAIDsSeq.insert(process.patTauMVAIDsSeq.index(getattr(process, updatedTauName)), process.rerunMvaIsolationSequence)  
         return process
+    
     process = nanoAOD_customiseAddTauIds(process)
 
     def nanoAOD_customiseAddBoostedIds(process):
-        updatedBoostedTauName = "slimmedTausBoostedNewIDCustom"
+        updatedBoostedTauName = "slimmedTausBoostedNewID"
         boostedTauIdEmbedder = tauIdConfig.TauIDEmbedder(process, cms, debug=False, 
                                                         originalTauName = "slimmedTausBoosted",
                                                         updatedTauName = updatedBoostedTauName,
