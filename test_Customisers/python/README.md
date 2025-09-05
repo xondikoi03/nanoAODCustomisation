@@ -8,7 +8,7 @@ The `customiser_cff.py` makes use of the <a href="https://github.com/cms-sw/cmss
 
 ### `makePuppiesFromMiniAOD(process)`
 ---
-
+This function sets up the **PileUp Per Particle Identification** (PUPPI) algorithm for MET reconstruction. It ensures that MET is calculated with improved pileup mitigation, crucial for accurate physics analysis.
 
 ### `nanoAOD_activateVID(process)`
 ---
@@ -142,43 +142,7 @@ print("Will recalculate the following discriminators on AK8 jets: "+", ".join(_b
 ```
 ## `customiser_cff_v2.py`
 
-### `nanoAOD_addDeepInfo`
----
-This function configures the CMSSW process to rerun deep-learning based flavor-tagging and jet substructure algorithms for **AK4 jets** in nanoAOD production. It takes in boolean values for which tagging algorithms to re-run in the process and updates the jet collection accordingly. 
-
-1. Initialise Discriminator List: `_btagDiscriminators=[]` which creates an empty list for collecting all b-tagging and substructure dicriminators to be recalculated.
-
-2. Add DeepCSV Discriminators: If `addDeepBTag==True`, then add the DeepCSV discriminators for `b`, `bb` and `c` quarks.
-```python
-if addDeepBTag:
-    print("Updating process to run DeepCSV btag")
-    _btagDiscriminators += ['pfDeepCSVJetTags:probb','pfDeepCSVJetTags:probbb','pfDeepCSVJetTags:probc']
-``` 
-3. Add DeepFlavour Discriminators: If `addDeepFlavour==True` then add the DeepFlavour discriminators for b, bb and c quarks.
-```python
-if addDeepFlavour:
-    print("Updating process to run DeepFlavour btag")
-        _btagDiscriminators +=['pfDeepFlavourJetTags:probb','pfDeepFlavourJetTags:probbb','pfDeepFlavourJetTags:problepb','pfDeepFlavourJetTags:probc']
-```
-If none of the above discriminators are requested or set to `TRUE`, the function exits without modifying the process.
-```python
-if len(_btagDiscriminators)==0: return process
-```
-4. Updating the jet collection: The `updateJetCollection` function reruns all the selected discriminators on the AK4Jet collection with the specificed Jet energy corrections(`AK4PFchs`).
-```python
-    print("Will recalculate the following discriminators: "+", ".join(_btagDiscriminators))
-    updateJetCollection(
-               process,
-               jetSource = cms.InputTag('slimmedJets'),
-               jetCorrections = ('AK4PFchs', cms.vstring(['L1FastJet', 'L2Relative', 'L3Absolute','L2L3Residual']), 'None'),
-               btagDiscriminators = _btagDiscriminators,
-               postfix = 'WithDeepInfo',
-           )
-    process.load("Configuration.StandardSequences.MagneticField_cff")
-    process.jetCorrFactorsNano.src="selectedUpdatedPatJetsWithDeepInfo"
-    process.updatedJets.jetSource="selectedUpdatedPatJetsWithDeepInfo"
-    return process
-```
+The default `default_TauIdsCustomisation(process)` TauID Customisations are as follows:
 
 ### `nanoAOD_addTauIds(process)`
 ---
@@ -200,28 +164,67 @@ def nanoAOD_addTauIds(process):
 This function customises the process to add boosted Tau ID discriminators and updates the Tau collection in nanoAOD to include `2017v2`, `dR0p32017v2`, `newDM2017v2`, `againstEle2018` ID algorithms. 
 
 ```python
+def nanoAOD_addBoostedTauIds(process):
+    updatedBoostedTauName = "slimmedTausBoostedNewID"
+    boostedTauIdEmbedder = tauIdConfig.TauIDEmbedder(process, cms, debug=False, 
+                                                     originalTauName = "slimmedTausBoosted",
+                                                     updatedTauName = updatedBoostedTauName,
+                                                     postfix="Boosted",
+                                                     toKeep = [ "2017v2", "dR0p32017v2", "newDM2017v2", "againstEle2018",])
+    boostedTauIdEmbedder.runTauID()
+    process.boostedTauSequence.insert(process.boostedTauSequence.index(process.finalBoostedTaus),
+                                      process.rerunMvaIsolationSequenceBoosted)
 
+    process.boostedTauSequence.insert(process.boostedTauSequence.index(process.finalBoostedTaus),
+                                      getattr(process, updatedBoostedTauName))
+
+    return process 
 ```
 
-## `electrons_cff.py`
+The TauID Customisation `Customise_TauIdsCustomisation(process)` has the following:
 
-The following objects can be found in <a href="https://github.com/cms-sw/cmssw/blob/CMSSW_10_6_X/PhysicsTools/NanoAOD/python/electrons_cff.py">`electrons_cff.py`</a> that are used in the function:
+### `nanoAOD_customiseAddTauIds(process)`
+---
+The **Tau Identification Discriminators** that helps with the identification of real Taus from other physics objects like Jets, Electrons and Muons. Here in this customiser file, the TauIDs that run are: `deepTau2017v1` and  `deepTau2017v2` . The default TauID as in the `nano_cff.py` - CMSSW_10_6_X is `deepTau2017v2p1`. These TauIDs are Deep-Learning based. 
+```python
+    print("###########################################")
+    print("Running TauID Customisations")
+    print("###########################################")
+    from PhysicsTools.NanoAOD.nano_cff import nanoAOD_activateVID
+    process = nanoAOD_activateVID(process)
+    import RecoTauTag.RecoTau.tools.runTauIdMVA as tauIdConfig
+    def nanoAOD_customiseAddTauIds(process):
+        updatedTauName = "slimmedTausUpdated"
+        tauIdEmbedder = tauIdConfig.TauIDEmbedder(
+            process, cms, debug=False, updatedTauName=updatedTauName,
+            toKeep = ["deepTau2017v1", "deepTau2017v2"])
+        tauIdEmbedder.runTauID()
 
-`electronSequence`: A CMSSW sequence(`cms.Sequence` object) that defines an ordered set of electron-related processing modules in the nanoAOD workflow. 
+        process.patTauMVAIDsSeq.insert(process.patTauMVAIDsSeq.index(getattr(process, updatedTauName)), process.rerunMvaIsolationSequence)  
+        return process
+    
+    process = nanoAOD_customiseAddTauIds(process)
+```
+
+### `nanoAOD_customiseAddBoostedTauIDs(process)`
+---
+The **Boosted Tau Identification Discriminators** that helps with the identification of taus that originate from boosted objects like Higgs, Z or W. This makes tau decay products to be very close to each other and thus traditional tau identification methods might fail. Here the Boosted TauIDs that run are: `2017v2, dR0p32017v2, newDM2017v2, againstEle2018`. 
 
 ```python
-electronSequence = cms.Sequence(
-    bitmapVIDForEle + bitmapVIDForEleHEEP + isoForEle + 
-    ptRatioRelForEle + seedGainEle +
-    slimmedElectronsWithUserData + finalElectrons)
-```
-`bitmapVIDForEle`: This defines a CMSSW EDProducer module, `EleVIDBNestedWPBitmapProducer` that creates a bitmap encoding the results of electron ID working points. The module checks which working points each electron passes and encodes this information in a bitmap. The bitmap is stored in the nanoAOD. 
+        updatedBoostedTauName = "slimmedTausBoostedNewID"
+        boostedTauIdEmbedder = tauIdConfig.TauIDEmbedder(process, cms, debug=False, 
+                                                        originalTauName = "slimmedTausBoosted",
+                                                        updatedTauName = updatedBoostedTauName,
+                                                        postfix="Boosted",
+                                                        toKeep = [ "2017v2", "dR0p32017v2", "newDM2017v2", "againstEle2018",])
+        boostedTauIdEmbedder.runTauID()
+        process.boostedTauSequence.insert(process.boostedTauSequence.index(process.finalBoostedTaus),
+                                        process.rerunMvaIsolationSequenceBoosted)
 
-```python
-bitmapVIDForEle = cms.EDProducer("EleVIDNestedWPBitmapProducer",
-    src = cms.InputTag("slimmedElectrons"),
-    WorkingPoints = electron_id_modules_WorkingPoints_nanoAOD.WorkingPoints,
-)
+        process.boostedTauSequence.insert(process.boostedTauSequence.index(process.finalBoostedTaus),
+                                        getattr(process, updatedBoostedTauName))
+
+        return process    
+    process = nanoAOD_customiseAddBoostedIds(process)
 ```
-> **Electron ID Working Points**: These are predefined sets of selection criteria (passCuts) used in the identification of electrons in analysis. Some of the common working points are: **veto**, **loose**, **medium** and **tight**.
 
