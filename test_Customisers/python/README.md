@@ -211,6 +211,7 @@ The **Tau Identification Discriminators** that helps with the identification of 
 The **Boosted Tau Identification Discriminators** that helps with the identification of taus that originate from boosted objects like Higgs, Z or W. This makes tau decay products to be very close to each other and thus traditional tau identification methods might fail. Here the Boosted TauIDs that run are: `2017v2, dR0p32017v2, newDM2017v2, againstEle2018`. 
 
 ```python
+    def nanoAOD_customiseAddBoostedIds(process):
         updatedBoostedTauName = "slimmedTausBoostedNewID"
         boostedTauIdEmbedder = tauIdConfig.TauIDEmbedder(process, cms, debug=False, 
                                                         originalTauName = "slimmedTausBoosted",
