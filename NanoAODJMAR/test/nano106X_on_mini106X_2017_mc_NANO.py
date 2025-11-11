@@ -22,12 +22,12 @@ process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(1000)
+    input = cms.untracked.int32(50000)
 )
 
 # Input source
 import FWCore.Utilities.FileUtils as FileUtils
-files = FileUtils.loadListFromFile ('datasets/CMS_mc_RunIISummer20UL16MiniAODv2_TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_MINIAODSIM_106X.txt')
+files = FileUtils.loadListFromFile ('datasets/W1Jets_To_LNu_MINIAODSIM_2016UL.txt')
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(*files),
     secondaryFileNames = cms.untracked.vstring()
@@ -39,7 +39,7 @@ process.options = cms.untracked.PSet(
 
 # Production Info
 process.configurationMetadata = cms.untracked.PSet(
-    annotation = cms.untracked.string('nano106X_on_mini106X_2017_mc nevts:1000'),
+    annotation = cms.untracked.string('nano106X_on_mini106X_2017_mc nevts:50000'),
     name = cms.untracked.string('Applications'),
     version = cms.untracked.string('$Revision: 1.19 $')
 )
@@ -53,7 +53,7 @@ process.NANOAODSIMoutput = cms.OutputModule("NanoAODOutputModule",
         dataTier = cms.untracked.string('NANOAODSIM'),
         filterName = cms.untracked.string('')
     ),
-    fileName = cms.untracked.string('nano106X_on_mini106X_2017_mc_NANOAOD_TTToSemiLeptonic.root'),
+    fileName = cms.untracked.string('nano106X_on_mini106X_2017_mc_NANOAOD_W1Jets_to_LNu_50K.root'),
     outputCommands = process.NANOAODSIMEventContent.outputCommands
 )
 
